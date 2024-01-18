@@ -1,0 +1,36 @@
+[package]
+name = "packer"
+description = "Packer generates buildpack with just what you need to start quickly"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "packer"
+path = "bin/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+packer-common.workspace = true
+packer-assets.workspace = true
+
+eyre.workspace = true
+serde_json.workspace = true
+
+clap = { version = "4", features = ["derive", "env", "unicode", "wrap_help"] }
+clap_complete = "4"
+clap_complete_fig = "4"
+dunce = "1"
+yansi = "1.0.0-gamma"
+
+[build-dependencies]
+vergen = { version = "8", default-features = false, features = [
+  "build",
+  "git",
+  "git2",
+] }

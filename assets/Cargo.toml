@@ -1,0 +1,28 @@
+[package]
+name = "packer-assets"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+packer-common.workspace = true
+
+eyre.workspace = true
+serde_json.workspace = true
+serde.workspace = true
+
+tracing-subscriber = { workspace = true, features = ["registry", "env-filter", "fmt"] }
+tracing.workspace = true
+
+dunce = "1"
+thiserror = "1"
+walkdir = "2"
+figment = { version = "0.10", features = ["toml", "env"] }
+toml = { version = "0.8", features = ["preserve_order"] }
+toml_edit = "0.21"

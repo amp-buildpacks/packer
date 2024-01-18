@@ -1,0 +1,13 @@
+github:
+  username: ${{ github.actor }}
+  token:    ${{ secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN }}
+
+package:
+  repositories:   ["ghcr.io/amp-buildpacks/{packer-name}"]
+  register:       false
+  registry_token: ${{ secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN }}
+
+docker_credentials:
+  - registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN }}
