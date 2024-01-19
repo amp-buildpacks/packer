@@ -24,7 +24,7 @@ For example:
 packer init solana
 ```
 
-Or init a empty Buildpack project directory:
+Or Initialize an empty Buildpack project directory:
 
 ```bash
 mkdir <buildpack-directory>
