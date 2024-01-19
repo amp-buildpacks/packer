@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {packer-name}
+package {{ packer_name }}
 
 import (
 	"fmt"
@@ -46,7 +46,7 @@ func (b Build) Build(context libcnb.BuildContext) (libcnb.BuildResult, error) {
 		return libcnb.BuildResult{}, fmt.Errorf("unable to create dependency resolver\n%w", err)
 	}
 
-	// install {packer-name}
+	// install {{ packer_name }}
 	// TODO: update dependency-name from metadata.dependencies for buildpack.toml
 	dependency, err := dr.Resolve("<dependency-name>", "")
 	if err != nil {

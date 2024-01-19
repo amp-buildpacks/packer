@@ -15,17 +15,17 @@
 api = "0.8"
 
 [buildpack]
-  description = "A Cloud Native Buildpack that provides the {packer-name} Tool Suite"
-  homepage = "https://github.com/amp-buildpacks/{packer-name}"
-  id = "amp-buildpacks/{packer-name}"
-  keywords = ["{packer-name}"]
+  description = "A Cloud Native Buildpack that provides the {{ packer_name | capitalize }} Tool Suite"
+  homepage = "https://github.com/amp-buildpacks/{{ packer_name }}"
+  id = "amp-buildpacks/{{ packer_name }}"
+  keywords = ["{{ packer_name | capitalize }}"]
   sbom-formats = ["application/vnd.cyclonedx+json", "application/vnd.syft+json"]
-  name = "AMP Buildpack for {packer-name}"
-  version = "{{.version}}"
+  name = "AMP Buildpack for {{ packer_name | capitalize }}"
+  version = "{{ '{{'|safe }} .version {{ '}}'|safe }}"
 
   [[buildpack.licenses]]
     type = "Apache-2.0"
-    uri = "https://github.com/amp-buildpacks/{packer-name}/blob/main/LICENSE"
+    uri = "https://github.com/amp-buildpacks/{{ packer_name }}/blob/main/LICENSE"
 
 [metadata]
   include-files = ["LICENSE", "README.md", "bin/build", "bin/detect", "bin/main", "buildpack.toml"]

@@ -31,6 +31,8 @@ eyre.workspace = true
 serde_json.workspace = true
 serde.workspace = true
 
+tera.workspace = true
+
 tracing-subscriber = { workspace = true, features = ["registry", "env-filter", "fmt"] }
 tracing.workspace = true
 
@@ -40,6 +42,7 @@ walkdir = "2"
 figment = { version = "0.10", features = ["toml", "env"] }
 toml = { version = "0.8", features = ["preserve_order"] }
 toml_edit = "0.21"
+lazy_static = "1"
 
 [dev-dependencies.cargo-husky]
 version = "1"
