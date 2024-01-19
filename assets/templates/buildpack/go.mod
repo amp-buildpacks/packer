@@ -1,4 +1,4 @@
-module github.com/amp-buildpacks/{packer-name}
+module github.com/amp-buildpacks/{{ packer_name }}
 
 go 1.20
 

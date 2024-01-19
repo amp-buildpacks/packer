@@ -17,14 +17,14 @@ package main
 import (
 	"os"
 
-	{packer-name} "github.com/amp-buildpacks/{packer-name}/{packer-name}"
+	{{ packer_name }} "github.com/amp-buildpacks/{{ packer_name }}/{{ packer_name }}"
 	"github.com/buildpacks/libcnb"
 	"github.com/paketo-buildpacks/libpak/bard"
 )
 
 func main() {
 	libcnb.Main(
-		{packer-name}.Detect{},
-		{packer-name}.Build{Logger: bard.NewLogger(os.Stdout)},
+		{{ packer_name }}.Detect{},
+		{{ packer_name }}.Build{Logger: bard.NewLogger(os.Stdout)},
 	)
 }

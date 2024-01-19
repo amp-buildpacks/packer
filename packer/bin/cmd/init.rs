@@ -62,10 +62,18 @@ impl InitArgs {
         p_println!(!quiet => "Initializing {}...", root.display());
 
         Buildpack::init_project(&root, &project_name)?;
-        Buildpack::init_git_repo(git)?;
-        Buildpack::init_workflow(&root, &project_name)?;
+        
+        init_git_repo(git)?;
 
         p_println!(!quiet => "    {} packer project: {}",  Paint::green("Initialized"), Paint::yellow(project_name.as_str()));
         Ok(())
     }
+}
+
+fn init_git_repo(git: Git<'_>) -> eyre::Result<()> {
+    // git init
+    if !git.is_in_repo()? {
+        git.init()?;
+    }
+    Ok(())
 }

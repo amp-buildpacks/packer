@@ -1,6 +1,6 @@
-# `ghcr.io/amp-buildpacks/{packer-name}`
+# `ghcr.io/amp-buildpacks/{{ packer_name }}`
 
-A Cloud Native Buildpack that provides the {packer-name} Tool Suite
+A Cloud Native Buildpack that provides the {{ packer_name | capitalize }} Tool Suite
 
 ## Usage
 
@@ -8,17 +8,17 @@ A Cloud Native Buildpack that provides the {packer-name} Tool Suite
 
 ```shell
 pack build <image-name> \
-    --path <{packer-name}-samples-path> \
-    --buildpack ghcr.io/amp-buildpacks/{packer-name} \
+    --path <{{ packer_name }}-samples-path> \
+    --buildpack ghcr.io/amp-buildpacks/{{ packer_name }} \
     --builder paketobuildpacks/builder-jammy-base
 ```
 
 For example:
 
 ```shell
-pack build {packer-name}-sample \
-    --path ./samples/{packer-name} \
-    --buildpack ghcr.io/amp-buildpacks/{packer-name} \
+pack build {{ packer_name }}-sample \
+    --path ./samples/{{ packer_name }} \
+    --buildpack ghcr.io/amp-buildpacks/{{ packer_name }} \
     --builder paketobuildpacks/builder-jammy-base
 ```
 
@@ -31,7 +31,7 @@ docker run -it <image-name>
 For example:
 
 ```shell
-docker run -it {packer-name}-sample
+docker run -it {{ packer_name }}-sample
 ```
 
 ## Contributing

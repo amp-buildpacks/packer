@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {packer-name}
+package {{ packer_name }}
 
 import (
 	"fmt"
@@ -23,16 +23,16 @@ import (
 )
 
 const (
-	PlanEntry = "{packer-name}"
+	PlanEntry = "{{ packer_name }}"
 )
 
 type Detect struct {
 }
 
 func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error) {
-	found, err := d.{packer-name}Project(context.Application.Path)
+	found, err := d.{{ packer_name }}Project(context.Application.Path)
 	if err != nil {
-		return libcnb.DetectResult{Pass: false}, fmt.Errorf("unable to detect {packer-name} requirements\n%w", err)
+		return libcnb.DetectResult{Pass: false}, fmt.Errorf("unable to detect {{ packer_name }} requirements\n%w", err)
 	}
 
 	if !found {
@@ -54,7 +54,7 @@ func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error
 	}, nil
 }
 
-func (d Detect) {packer-name}Project(appDir string) (bool, error) {
+func (d Detect) {{ packer_name }}Project(appDir string) (bool, error) {
 	// TODO: update filename
 	filename := "<filename>"
 	_, err := os.Stat(filepath.Join(appDir, filename))

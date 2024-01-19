@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {packer-name}
+package {{ packer_name }}
 
 import (
 	"bytes"
@@ -65,13 +65,13 @@ func (c CustomLayer) Contribute(layer libcnb.Layer) (libcnb.Layer, error) {
 			return libcnb.Layer{}, fmt.Errorf("unable to set $PATH\n%w", err)
 		}
 
-		// get {packer-name} version
-		buf, err := c.Execute("{packer-name}", []string{"--version"})
+		// get {{ packer_name }} version
+		buf, err := c.Execute("{{ packer_name }}", []string{"--version"})
 		if err != nil {
-			return libcnb.Layer{}, fmt.Errorf("unable to get {packer-name} version\n%w", err)
+			return libcnb.Layer{}, fmt.Errorf("unable to get {{ packer_name }} version\n%w", err)
 		}
 		version := strings.TrimSpace(buf.String())
-		c.Logger.Bodyf("Checking {packer-name} version: %s", version)
+		c.Logger.Bodyf("Checking {{ packer_name }} version: %s", version)
 
 		// TODO: May be need more codes...
 		return layer, nil

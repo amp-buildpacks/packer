@@ -64,24 +64,24 @@ jobs:
                 printf "release-notes<<%s\n%s\n%s\n" "${DELIMITER}" "${RELEASE_NOTES}" "${DELIMITER}" >> "${GITHUB_OUTPUT}" # see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
               env:
                 DESCRIPTOR: .github/pipeline-descriptor.yml
-                GITHUB_TOKEN: ${{ secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ '{{'|safe }} secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN {{ '}}'|safe }}
             - uses: peter-evans/create-pull-request@v5
               with:
-                author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+                author: ${{ '{{'|safe }} github.actor {{ '}}'|safe }} <${{ '{{'|safe }} github.actor {{ '}}'|safe }}@users.noreply.github.com>
                 body: |-
-                    Bumps pipeline from `${{ steps.pipeline.outputs.old-version }}` to `${{ steps.pipeline.outputs.new-version }}`.
+                    Bumps pipeline from `${{ '{{'|safe }} steps.pipeline.outputs.old-version {{ '}}'|safe }}` to `${{ '{{'|safe }} steps.pipeline.outputs.new-version {{ '}}'|safe }}`.
 
                     <details>
                     <summary>Release Notes</summary>
-                    ${{ steps.pipeline.outputs.release-notes }}
+                    ${{ '{{'|safe }} steps.pipeline.outputs.release-notes {{ '}}'|safe }}
                     </details>
                 branch: update/pipeline
                 commit-message: |-
-                    Bump pipeline from ${{ steps.pipeline.outputs.old-version }} to ${{ steps.pipeline.outputs.new-version }}
+                    Bump pipeline from ${{ '{{'|safe }} steps.pipeline.outputs.old-version {{ '}}'|safe }} to ${{ '{{'|safe }} steps.pipeline.outputs.new-version {{ '}}'|safe }}
 
-                    Bumps pipeline from ${{ steps.pipeline.outputs.old-version }} to ${{ steps.pipeline.outputs.new-version }}.
+                    Bumps pipeline from ${{ '{{'|safe }} steps.pipeline.outputs.old-version {{ '}}'|safe }} to ${{ '{{'|safe }} steps.pipeline.outputs.new-version {{ '}}'|safe }}.
                 delete-branch: true
                 labels: semver:patch, type:task
                 signoff: true
-                title: Bump pipeline from ${{ steps.pipeline.outputs.old-version }} to ${{ steps.pipeline.outputs.new-version }}
-                token: ${{ secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN }}
+                title: Bump pipeline from ${{ '{{'|safe }} steps.pipeline.outputs.old-version {{ '}}'|safe }} to ${{ '{{'|safe }} steps.pipeline.outputs.new-version {{ '}}'|safe }}
+                token: ${{ '{{'|safe }} secrets.AMP_BUILDPACKS_BOT_GITHUB_TOKEN {{ '}}'|safe }}

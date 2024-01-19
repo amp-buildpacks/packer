@@ -15,7 +15,7 @@
 
 set -euo pipefail
 
-GOOS="linux" go build -ldflags='-s -w' -o bin/main github.com/amp-buildpacks/{packer-name}/cmd/main
+GOOS="linux" go build -ldflags='-s -w' -o bin/main github.com/amp-buildpacks/{{ packer_name }}/cmd/main
 
 if [ "${STRIP:-false}" != "false" ]; then
   strip bin/main
