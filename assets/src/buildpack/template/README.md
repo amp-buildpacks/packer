@@ -1,42 +1,37 @@
-# packer
+# `ghcr.io/amp-buildpacks/{packer-name}`
 
-Packer generates buildpack with just what you need to start quickly!
+A Cloud Native Buildpack that provides the {packer-name} Tool Suite
 
-## Getting Started
+## Usage
 
-### Install packer
+### 1. To use this buildpack, simply run:
 
-```bash
-git clone https://github.com/amp-buildpacks/packer.git
-cd packer
-cargo install --path packer
-```
-
-### Create A New Buildpack
-
-```bash
-packer init <buildpack-name>
+```shell
+pack build <image-name> \
+    --path <{packer-name}-samples-path> \
+    --buildpack ghcr.io/amp-buildpacks/{packer-name} \
+    --builder paketobuildpacks/builder-jammy-base
 ```
 
 For example:
 
-```bash
-packer init solana
+```shell
+pack build {packer-name}-sample \
+    --path ./samples/{packer-name} \
+    --buildpack ghcr.io/amp-buildpacks/{packer-name} \
+    --builder paketobuildpacks/builder-jammy-base
 ```
 
-Or Initialize an empty Buildpack project directory:
+### 2. To run the image, simply run:
 
-```bash
-mkdir <buildpack-directory>
-cd <buildpack-directory>
-
-packer init
+```shell
+docker run -it <image-name>
 ```
 
-### Get More Help
+For example:
 
-```bash
-packer -h
+```shell
+docker run -it {packer-name}-sample
 ```
 
 ## Contributing
@@ -65,4 +60,4 @@ limitations under the License.
 
 ## Credits
 
-Heavily inspired by https://github.com/foundry-rs/foundry
+Heavily inspired by https://buildpacks.io/docs/buildpack-author-guide/create-buildpack/
