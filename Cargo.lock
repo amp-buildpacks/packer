@@ -87,6 +87,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "374d28ec25809ee0e23827c2ab573d729e293f281dfe393500e7ad618baa61c6"
 
 [[package]]
+name = "cargo-husky"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b02b629252fe8ef6460461409564e2c21d0c8e77e0944f3d189ff06c4e932ad"
+
+[[package]]
 name = "cc"
 version = "1.0.83"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -404,6 +410,7 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 name = "packer"
 version = "0.1.0"
 dependencies = [
+ "cargo-husky",
  "clap",
  "clap_complete",
  "clap_complete_fig",
@@ -420,6 +427,7 @@ dependencies = [
 name = "packer-assets"
 version = "0.1.0"
 dependencies = [
+ "cargo-husky",
  "dunce",
  "eyre",
  "figment",
@@ -438,6 +446,7 @@ dependencies = [
 name = "packer-common"
 version = "0.1.0"
 dependencies = [
+ "cargo-husky",
  "dunce",
  "eyre",
  "figment",

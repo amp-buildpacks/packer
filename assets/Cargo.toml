@@ -40,3 +40,8 @@ walkdir = "2"
 figment = { version = "0.10", features = ["toml", "env"] }
 toml = { version = "0.8", features = ["preserve_order"] }
 toml_edit = "0.21"
+
+[dev-dependencies.cargo-husky]
+version = "1"
+default-features = false
+features = ["user-hooks", "run-for-all"]

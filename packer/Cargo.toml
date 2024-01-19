@@ -48,3 +48,8 @@ vergen = { version = "8", default-features = false, features = [
   "git",
   "git2",
 ] }
+
+[dev-dependencies.cargo-husky]
+version = "1"
+default-features = false
+features = ["user-hooks", "run-for-all"]
