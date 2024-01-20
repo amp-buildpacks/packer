@@ -75,7 +75,7 @@ impl InitArgs {
             "buildpack" => Buildpack::init_project(&root, &project_name)?,
             "meta" => Meta::init_project(&root, &project_name)?,
             "builder" => Builder::init_project(&root, &project_name)?,
-            _ => eyre::bail!("Unknown template: {}", template),
+            _ => eyre::bail!("Not support template: {}", template),
         }
 
         init_git_repo(git)?;
