@@ -1,0 +1,37 @@
+# Copyright (c) The Amphitheatre Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+description = "A Cloud Native Buildpacks (CNB) builder with Paketo stacks (Jammy Jellyfish) and {{ packer_name }}"
+
+{% for dependency in dependencies %}
+[[buildpacks]]
+  id = "{{ dependency.repo }}"
+  uri = "docker://ghcr.io/{{ dependency.repo }}:{{ dependency.version }}"
+{% endfor %}
+
+[lifecycle]
+  version = "0.18.3"
+
+[[order]]
+
+{% for dependency in dependencies %}
+  [[order.group]]
+    id = "{{ dependency.repo }}"
+    version = "{{ dependency.version }}"
+{% endfor %}
+
+[stack]
+  id = "io.buildpacks.stacks.jammy.tiny"
+  build-image = "docker.io/paketobuildpacks/build-jammy-tiny"
+  run-image = "docker.io/paketobuildpacks/run-jammy-tiny"
