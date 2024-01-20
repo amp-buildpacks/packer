@@ -87,7 +87,9 @@ fn write_files(
             false => root.join(template),
         };
         fs::create_dir_all(target_path.parent().unwrap())?;
-        fs::write(target_path, template_engine.render(template, &context)?)?;
+
+        let rendered = template_engine.render(template, context)?;
+        fs::write(target_path, rendered)?;
     }
     Ok(())
 }
