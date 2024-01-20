@@ -1,0 +1,7 @@
+{% for dependency in dependencies %}
+[[dependencies]]
+  uri = "docker://ghcr.io/{{ dependency.repo }}:{{ dependency.version }}"
+{% endfor %}
+
+[[dependencies]]
+  uri = "docker://gcr.io/paketo-buildpacks/procfile:5.6.8"

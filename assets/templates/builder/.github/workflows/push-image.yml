@@ -1,0 +1,67 @@
+name: Push Builder Image
+
+# on:
+#   release:
+#     types:
+#     - published
+
+on:
+  push:
+    tags:
+      - v[0-9]+.*
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  push:
+    name: Push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Get pack version
+      id: pack-version
+      run: |
+        version=$(jq -r .pack "scripts/.util/tools.json")
+        echo "version=${version#v}" >> "$GITHUB_OUTPUT"
+
+    - name: Install Global Pack
+      uses: buildpacks/github-actions/setup-pack@main
+      with:
+        pack-version: ${{ '{{'|safe }} steps.pack-version.outputs.version {{ '}}'|safe }}
+
+    - name: Create Builder Image
+      run: |
+        pack builder create builder --config builder.toml
+
+    - name: Set environment variable
+      run: echo "IMAGE_NAME=ghcr.io/${{ '{{'|safe }} github.repository {{ '}}'|safe }}" >> $GITHUB_ENV
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ '{{'|safe }} github.actor {{ '}}'|safe }}
+        password: ${{ '{{'|safe }} secrets.GITHUB_TOKEN {{ '}}'|safe }}
+    
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ '{{'|safe }} env.IMAGE_NAME {{ '}}'|safe }}
+
+    - name: Push To ghcr.io
+      run: |
+        registry_uri="ghcr.io"
+        registry_repo="${{ '{{'|safe }} github.repository {{ '}}'|safe }}"
+        version="${{ '{{'|safe }} fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] {{ '}}'|safe }}"
+        version=${version#v}
+          
+        docker tag builder "${registry_uri}/${registry_repo}:latest"
+        docker tag builder "${registry_uri}/${registry_repo}:${version}"
+
+        docker push "${registry_uri}/${registry_repo}:latest"
+        docker push "${registry_uri}/${registry_repo}:${version}"

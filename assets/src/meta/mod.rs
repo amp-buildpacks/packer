@@ -20,14 +20,13 @@ use tera::Tera;
 use crate::{init_project, new_template_engine, Assets};
 
 lazy_static! {
-    pub static ref BUILDPACK_TEMPLATE_ENGINE: Tera =
-        new_template_engine("/templates/buildpack/**/*");
+    pub static ref META_TEMPLATE_ENGINE: Tera = new_template_engine("/templates/meta/**/*");
 }
 
-pub struct Buildpack;
+pub struct Meta;
 
-impl Assets for Buildpack {
+impl Assets for Meta {
     fn init_project(root: &std::path::Path, project_name: &str) -> eyre::Result<()> {
-        init_project(BUILDPACK_TEMPLATE_ENGINE.deref(), root, project_name)
+        init_project(META_TEMPLATE_ENGINE.deref(), root, project_name)
     }
 }

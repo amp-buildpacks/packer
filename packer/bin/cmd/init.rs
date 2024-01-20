@@ -14,7 +14,7 @@
 
 use clap::{Parser, ValueHint};
 use eyre::Result;
-use packer_assets::{Assets, Buildpack};
+use packer_assets::{Assets, Builder, Buildpack, Meta};
 use packer_common::{fs, p_println, Git};
 use std::path::PathBuf;
 use yansi::Paint;
@@ -23,20 +23,30 @@ use yansi::Paint;
 #[derive(Clone, Debug, Parser)]
 pub struct InitArgs {
     /// The root directory of the new project.
-    #[clap(value_hint = ValueHint::DirPath, default_value = ".", value_name = "PATH")]
+    #[clap(value_hint = ValueHint::DirPath, default_value = ".", value_name = "PROJECT_NAME")]
     root: PathBuf,
+
+    /// The template to use for the new project, Support buildpack, meta and builder.
+    #[clap(long, short, default_value = "buildpack")]
+    template: String,
 
     /// Create the project even if the specified root directory is not empty.
     #[clap(long, short)]
     force: bool,
 
-    #[clap(long, short, default_value = "false")]
+    /// Suppress all output.
+    #[clap(long, short)]
     quiet: bool,
 }
 
 impl InitArgs {
     pub fn run(self) -> Result<()> {
-        let InitArgs { root, force, quiet } = self;
+        let InitArgs {
+            root,
+            template,
+            force,
+            quiet,
+        } = self;
 
         // create the root dir if it does not exist
         if !root.exists() {
@@ -61,8 +71,13 @@ impl InitArgs {
 
         p_println!(!quiet => "Initializing {}...", root.display());
 
-        Buildpack::init_project(&root, &project_name)?;
-        
+        match template.as_str() {
+            "buildpack" => Buildpack::init_project(&root, &project_name)?,
+            "meta" => Meta::init_project(&root, &project_name)?,
+            "builder" => Builder::init_project(&root, &project_name)?,
+            _ => eyre::bail!("Unknown template: {}", template),
+        }
+
         init_git_repo(git)?;
 
         p_println!(!quiet => "    {} packer project: {}",  Paint::green("Initialized"), Paint::yellow(project_name.as_str()));
