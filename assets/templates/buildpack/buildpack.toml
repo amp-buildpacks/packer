@@ -32,15 +32,17 @@ api = "0.8"
   pre-package = "scripts/build.sh"
 
   # TODO: update your dependencies information
+{% for dependency in dependencies %}
   [[metadata.dependencies]]
-    id = "xx"
-    name = "xx"
-    purl = "pkg:generic/xx@vxx.xx.xx"
-    sha256 = "xx"
-    uri = "xx"
+    id = "{{ dependency.id }}"
+    name = "{{ dependency.name }}"
+    purl = "pkg:generic/{{ dependency.pkg_name }}@v{{ dependency.version }}"
+    sha256 = "{{ dependency.sha256 }}"
+    uri = "{{ dependency.uri }}"
     stacks = ["*"]
-    version = "xx.xx.xx"
-    licenses = ["Apache-2.0"]
+    version = "{{ dependency.version }}"
+    licenses = [ "{{ dependency.license }}" ]
+{% endfor %}
 
 [[stacks]]
   id = "*"

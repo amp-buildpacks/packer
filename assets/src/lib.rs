@@ -16,7 +16,7 @@ extern crate self as packer_assets;
 
 use eyre::Result;
 use packer_common::{fs, p_println};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use tera::{Context, Tera};
 
 pub mod buildpack;
@@ -29,7 +29,7 @@ pub mod builder;
 pub use builder::Builder;
 
 pub trait Assets {
-    fn init_project(root: &Path, project_name: &str) -> Result<()>;
+    fn init_project(root: &Path, project_name: &str, config_path: &Option<PathBuf>) -> Result<()>;
 }
 
 fn new_template_engine(dir: &str) -> Tera {
@@ -44,14 +44,42 @@ fn new_template_engine(dir: &str) -> Tera {
 
 fn init_project(
     template_engine: &Tera,
-    root: &std::path::Path,
+    root: &Path,
     project_name: &str,
-) -> eyre::Result<()> {
+    config_path: &Option<PathBuf>,
+) -> Result<()> {
+    let context = init_context(project_name, config_path)?;
+    write_files(template_engine, &context, root, project_name)
+}
+
+fn init_context(project_name: &str, config_path: &Option<PathBuf>) -> Result<Context> {
     let mut context = Context::new();
     context.insert("packer_name", &project_name);
-    // TODO: issue #7 Support custom configuration file
-    context.insert("dependencies", "");
 
+    if let Some(config_path) = config_path {
+        let config_json = read_config(config_path)?;
+        let config_context = Context::from_serialize(config_json)?;
+        context.extend(config_context);
+    } else {
+        // support some default value
+        context.insert("dependencies", "");
+    }
+    Ok(context)
+}
+
+fn read_config(config_path: &Path) -> Result<serde_json::Value> {
+    let config_content = fs::read_to_string(config_path)?;
+    let config_value: toml::Value = toml::from_str(&config_content)?;
+    let content_json = serde_json::to_value(&config_value)?;
+    Ok(content_json)
+}
+
+fn write_files(
+    template_engine: &Tera,
+    context: &Context,
+    root: &Path,
+    project_name: &str,
+) -> Result<()> {
     let template_names = template_engine.get_template_names();
     for template in template_names {
         let target_path = match template.starts_with("packer/") {
@@ -59,8 +87,9 @@ fn init_project(
             false => root.join(template),
         };
         fs::create_dir_all(target_path.parent().unwrap())?;
-        fs::write(target_path, template_engine.render(template, &context)?)?;
-    }
 
+        let rendered = template_engine.render(template, context)?;
+        fs::write(target_path, rendered)?;
+    }
     Ok(())
 }

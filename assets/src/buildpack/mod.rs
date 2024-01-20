@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::ops::Deref;
+use std::{
+    ops::Deref,
+    path::{Path, PathBuf},
+};
 
 use lazy_static::lazy_static;
 use tera::Tera;
@@ -27,7 +30,16 @@ lazy_static! {
 pub struct Buildpack;
 
 impl Assets for Buildpack {
-    fn init_project(root: &std::path::Path, project_name: &str) -> eyre::Result<()> {
-        init_project(BUILDPACK_TEMPLATE_ENGINE.deref(), root, project_name)
+    fn init_project(
+        root: &Path,
+        project_name: &str,
+        config_path: &Option<PathBuf>,
+    ) -> eyre::Result<()> {
+        init_project(
+            BUILDPACK_TEMPLATE_ENGINE.deref(),
+            root,
+            project_name,
+            config_path,
+        )
     }
 }
