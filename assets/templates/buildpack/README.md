@@ -25,13 +25,13 @@ pack build {{ packer_name }}-sample \
 ### 2. To run the image, simply run:
 
 ```shell
-docker run -it <image-name>
+docker run -u <uid>:<gid> -it <image-name>
 ```
 
 For example:
 
 ```shell
-docker run -it {{ packer_name }}-sample
+docker run -u 1001:cnb -it {{ packer_name }}-sample
 ```
 
 ## Contributing

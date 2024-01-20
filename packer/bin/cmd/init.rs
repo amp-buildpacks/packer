@@ -19,7 +19,7 @@ use packer_common::{fs, p_println, Git};
 use std::path::PathBuf;
 use yansi::Paint;
 
-/// CLI arguments for `forge init`.
+/// CLI arguments for `packer init`.
 #[derive(Clone, Debug, Parser)]
 pub struct InitArgs {
     /// The root directory of the new project.
@@ -29,6 +29,10 @@ pub struct InitArgs {
     /// The template to use for the new project, Support buildpack, meta and builder.
     #[clap(long, short, default_value = "buildpack")]
     template: String,
+
+    /// The path to the configuration file. If not specified, the default configuration file will be used.
+    #[clap(long, short, value_hint = ValueHint::FilePath, value_name = "CONFIG_FILE")]
+    config: Option<PathBuf>,
 
     /// Create the project even if the specified root directory is not empty.
     #[clap(long, short)]
@@ -44,6 +48,7 @@ impl InitArgs {
         let InitArgs {
             root,
             template,
+            config,
             force,
             quiet,
         } = self;
@@ -72,9 +77,9 @@ impl InitArgs {
         p_println!(!quiet => "Initializing {}...", root.display());
 
         match template.as_str() {
-            "buildpack" => Buildpack::init_project(&root, &project_name)?,
-            "meta" => Meta::init_project(&root, &project_name)?,
-            "builder" => Builder::init_project(&root, &project_name)?,
+            "buildpack" => Buildpack::init_project(&root, &project_name, &config)?,
+            "meta" => Meta::init_project(&root, &project_name, &config)?,
+            "builder" => Builder::init_project(&root, &project_name, &config)?,
             _ => eyre::bail!("Not support template: {}", template),
         }
 

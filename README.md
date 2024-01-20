@@ -39,6 +39,50 @@ packer init
 packer -h
 ```
 
+## Configuration File Supports Variables
+
+### Buildpack Template
+
+```toml
+[[dependencies]]
+id = "leo-gnu"
+name = "Leo (GNU libc)"
+pkg_name = "leo"
+sha256 = "abcd29454e940dd320b6915569f840a9ffe2515045c06667b5aa2ad34f7e0320"
+uri = "https://github.com/AleoHQ/leo/releases/download/v1.10.0/leo-v1.10.0-x86_64-unknown-linux-gnu.zip"
+version = "1.10.0"
+license = "GNU"
+
+[[dependencies]]
+id = "leo-musl"
+name = "Leo (musl libc)"
+pkg_name = "leo"
+sha256 = "508264f03760d0a0c9d8cd13c603e0e0d595388b3729762ebfbcc26abe46d667"
+uri = "https://github.com/AleoHQ/leo/releases/download/v1.10.0/leo-v1.10.0-x86_64-unknown-linux-musl.zip"
+version = "1.10.0"
+license = "GNU"
+```
+
+### Meta Template
+
+```toml
+[[dependencies]]
+repo = "amp-buildpacks/leo"
+version = "0.1.2"
+```
+
+### Builder Template
+
+```toml
+[[dependencies]]
+repo = "amp-buildpacks/leo-dist"
+version = "0.1.2"
+
+[[dependencies]]
+repo = "amp-buildpacks/aleo"
+version = "0.1.2"
+```
+
 ## Contributing
 
 If anything feels off, or if you feel that some functionality is missing, please
