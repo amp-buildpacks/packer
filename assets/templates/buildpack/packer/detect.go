@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	PlanEntry = "{{ packer_name }}"
+	PlanEntry{{ packer_name | capitalize }} = "{{ packer_name }}"
 )
 
 type Detect struct {
@@ -44,10 +44,10 @@ func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error
 		Plans: []libcnb.BuildPlan{
 			{
 				Provides: []libcnb.BuildPlanProvide{
-					{Name: PlanEntry},
+					{Name: PlanEntry{{ packer_name | capitalize }}},
 				},
 				Requires: []libcnb.BuildPlanRequire{
-					{Name: PlanEntry},
+					{Name: PlanEntry{{ packer_name | capitalize }}},
 				},
 			},
 		},

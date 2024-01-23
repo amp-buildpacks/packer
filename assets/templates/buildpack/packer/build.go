@@ -30,32 +30,44 @@ func (b Build) Build(context libcnb.BuildContext) (libcnb.BuildResult, error) {
 	b.Logger.Title(context.Buildpack)
 	result := libcnb.NewBuildResult()
 
-	// cr, err := libpak.NewConfigurationResolver(context.Buildpack, &b.Logger)
-	// if err != nil {
-	// 	return libcnb.BuildResult{}, fmt.Errorf("unable to create configuration resolver\n%w", err)
-	// }
+	pr := libpak.PlanEntryResolver{Plan: context.Plan}
 
-	dc, err := libpak.NewDependencyCache(context)
-	if err != nil {
-		return libcnb.BuildResult{}, fmt.Errorf("unable to create dependency cache\n%w", err)
+	if _, ok, err := pr.Resolve(PlanEntry{{ packer_name | capitalize }}); err != nil {
+		return libcnb.BuildResult{}, fmt.Errorf("unable to resolve {{ packer_name | capitalize }} plan entry\n%w", err)
+	} else if ok {
+		cr, err := libpak.NewConfigurationResolver(context.Buildpack, &b.Logger)
+		if err != nil {
+			return libcnb.BuildResult{}, fmt.Errorf("unable to create configuration resolver\n%w", err)
+		}
+
+		dc, err := libpak.NewDependencyCache(context)
+		if err != nil {
+			return libcnb.BuildResult{}, fmt.Errorf("unable to create dependency cache\n%w", err)
+		}
+		dc.Logger = b.Logger
+
+		dr, err := libpak.NewDependencyResolver(context)
+		if err != nil {
+			return libcnb.BuildResult{}, fmt.Errorf("unable to create dependency resolver\n%w", err)
+		}
+
+		// install {{ packer_name }}
+		// TODO: update dependency.id from metadata.dependencies for buildpack.toml
+		v, _ := cr.Resolve("BP_{{ packer_name | upper }}_VERSION")
+		dependency, err := dr.Resolve("{{ packer_name }}", v)
+		if err != nil {
+			return libcnb.BuildResult{}, fmt.Errorf("unable to find dependency\n%w", err)
+		}
+
+		{{ packer_name }}Layer := New{{ packer_name | capitalize }}(dependency, dc)
+		{{ packer_name }}Layer.Logger = b.Logger
+
+		result.Processes, err = {{ packer_name }}Layer.BuildProcessTypes(cr, context.Application)
+		if err != nil {
+			return libcnb.BuildResult{}, fmt.Errorf("unable to build list of process types\n%w", err)
+		}
+		result.Layers = append(result.Layers, {{ packer_name }}Layer)
 	}
-	dc.Logger = b.Logger
-
-	dr, err := libpak.NewDependencyResolver(context)
-	if err != nil {
-		return libcnb.BuildResult{}, fmt.Errorf("unable to create dependency resolver\n%w", err)
-	}
-
-	// install {{ packer_name }}
-	// TODO: update dependency-name from metadata.dependencies for buildpack.toml
-	dependency, err := dr.Resolve("<dependency-name>", "")
-	if err != nil {
-		return libcnb.BuildResult{}, fmt.Errorf("unable to find dependency\n%w", err)
-	}
-
-	customLayer := NewCustomLayer(dependency, dc)
-	customLayer.Logger = b.Logger
-	result.Layers = append(result.Layers, customLayer)
 
 	return result, nil
 }

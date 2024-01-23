@@ -31,6 +31,18 @@ api = "0.8"
   include-files = ["LICENSE", "README.md", "bin/build", "bin/detect", "bin/main", "buildpack.toml"]
   pre-package = "scripts/build.sh"
 
+  [[metadata.configurations]]
+    build = true
+    default = "1.*"
+    description = "The {{ packer_name | capitalize }} version"
+    name = "BP_{{ packer_name | upper }}_VERSION"
+
+  [[metadata.configurations]]
+    build = true
+    default = "true"
+    description = "Enable the {{ packer_name | capitalize }} run process"
+    name = "BP_ENABLE_{{ packer_name | upper }}_PROCESS"
+
   # TODO: update your dependencies information
 {% for dependency in dependencies %}
   [[metadata.dependencies]]

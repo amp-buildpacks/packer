@@ -10,6 +10,9 @@ Packer generates buildpack with just what you need to start quickly!
 git clone https://github.com/amp-buildpacks/packer.git
 cd packer
 cargo install --path packer
+
+## Or
+cargo install --git https://github.com/amp-buildpacks/packer.git
 ```
 
 ### Create A New Buildpack

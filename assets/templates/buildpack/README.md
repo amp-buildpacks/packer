@@ -2,6 +2,13 @@
 
 A Cloud Native Buildpack that provides the {{ packer_name | capitalize }} Tool Suite
 
+## Configuration
+
+| Environment Variable      | Description                                                                                                                                                                                                                                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$BP_{{ packer_name | upper }}_VERSION` | Configure the version of {{ packer_name | capitalize }} to install. It can be a specific version or a wildcard like `1.*`. It defaults to the latest `1.*` version. |
+
+
 ## Usage
 
 ### 1. To use this buildpack, simply run:
