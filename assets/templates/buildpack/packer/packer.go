@@ -55,7 +55,7 @@ func (r {{ packer_name | capitalize }}) Contribute(layer libcnb.Layer) (libcnb.L
 
 		// TODO: May be use copy instead of it or update Extract Path or stripComponents=1
 		r.Logger.Bodyf("Expanding %s to %s", artifact.Name(), bin)
-		if err := crush.Extract(artifact, layer.Path, 1); err != nil {
+		if err := crush.Extract(artifact, bin, 1); err != nil {
 			return libcnb.Layer{}, fmt.Errorf("unable to expand %s\n%w", artifact.Name(), err)
 		}
 
