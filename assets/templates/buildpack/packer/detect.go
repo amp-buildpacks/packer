@@ -32,7 +32,7 @@ type Detect struct {
 func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error) {
 	found, err := d.{{ packer_name }}Project(context.Application.Path)
 	if err != nil {
-		return libcnb.DetectResult{Pass: false}, fmt.Errorf("unable to detect {{ packer_name }} requirements\n%w", err)
+		return libcnb.DetectResult{Pass: false}, fmt.Errorf("unable to detect {{ packer_name | capitalize }} requirements\n%w", err)
 	}
 
 	if !found {
@@ -55,7 +55,7 @@ func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error
 }
 
 func (d Detect) {{ packer_name }}Project(appDir string) (bool, error) {
-	// TODO: update filename
+	// TODO: update project config filename, like package.json or Move.toml
 	filename := "<filename>"
 	_, err := os.Stat(filepath.Join(appDir, filename))
 	if os.IsNotExist(err) || err != nil {
