@@ -13,18 +13,13 @@
 # limitations under the License.
 
 description = "A Cloud Native Buildpacks (CNB) builder with Paketo stacks (Jammy Jellyfish) and {{ packer_name }}"
-
 {% for dependency in dependencies %}
 [[buildpacks]]
   id = "{{ dependency.repo }}"
   uri = "docker://ghcr.io/{{ dependency.repo }}:{{ dependency.version }}"
 {% endfor %}
 
-[lifecycle]
-  version = "0.18.3"
-
 [[order]]
-
 {% for dependency in dependencies %}
   [[order.group]]
     id = "{{ dependency.repo }}"
