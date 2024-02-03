@@ -72,7 +72,11 @@ impl InitArgs {
             p_println!(!quiet => "Target directory is not empty, but `--force` was specified");
         }
 
-        let project_name = root.file_name().unwrap().to_string_lossy().into_owned();
+        let project_name = root
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .replace("-dist", "");
 
         p_println!(!quiet => "Initializing {}...", root.display());
 
