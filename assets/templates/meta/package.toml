@@ -4,7 +4,7 @@
 {% endfor %}
 
 [[dependencies]]
-  uri = "docker://gcr.io/paketo-buildpacks/procfile:5.9.0"
+  uri = "docker://docker.io/paketobuildpacks/procfile:5.11.0"
 
 [[targets]]
   arch = "amd64"
